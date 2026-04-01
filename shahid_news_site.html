@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shahid Baba Web Site | Latest News</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-gray: #121212;
+            --india-tv-red: #ff0000;
+            --border-color: #e0e0e0;
+            --navy: #002e5b;
+        }
+
+        body { font-family: 'Roboto', sans-serif; margin: 0; background-color: #ffffff; overflow-x: hidden; }
+
+        /* Header & Sidebar */
+        .header-top { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; background: white; z-index: 100; }
+        .menu-icon { font-size: 24px; cursor: pointer; padding: 5px; }
+        
+        /* Sidebar Menu */
+        .sidebar { position: fixed; left: -280px; top: 0; width: 280px; height: 100%; background: var(--navy); color: white; transition: 0.3s; z-index: 1001; padding-top: 60px; }
+        .sidebar a { display: block; padding: 15px 25px; color: white; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 18px; }
+        .sidebar .close-btn { position: absolute; top: 10px; right: 20px; font-size: 30px; cursor: pointer; }
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; }
+
+        .logo { font-size: 22px; font-weight: 900; text-transform: uppercase; text-align: center; flex-grow: 1; }
+        .logo span { color: var(--india-tv-red); }
+        .live-btn { background: var(--india-tv-red); color: white; padding: 6px 12px; border-radius: 4px; font-weight: bold; font-size: 12px; cursor: pointer; }
+
+        /* Navigation */
+        .nav-scroll { background: var(--navy); display: flex; overflow-x: auto; white-space: nowrap; position: sticky; top: 52px; z-index: 99; }
+        .nav-scroll a { color: white; padding: 12px 18px; text-decoration: none; font-size: 14px; }
+        .nav-scroll a.active { border-bottom: 3px solid white; background: rgba(255,255,255,0.1); }
+
+        /* Content */
+        .news-block { border-bottom: 8px solid #f0f0f0; display: block; }
+        .media-container { width: 100%; background: #000; }
+        .main-img, .main-video { width: 100%; height: auto; display: block; }
+        iframe { width: 100%; aspect-ratio: 16/9; border: none; }
+        .headline { font-size: 19px; font-weight: 700; padding: 15px; margin: 0; line-height: 1.4; }
+
+        /* Modals */
+        #modal, #liveModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1100; padding: 20px; flex-direction: column; justify-content: center; }
+        .modal-body { background: white; padding: 20px; border-radius: 10px; max-width: 500px; margin: auto; width: 100%; color: black; }
+        input, textarea, select { width: 100%; margin-bottom: 10px; padding: 12px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .submit-btn { background: var(--india-tv-red); color: white; border: none; width: 100%; padding: 15px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+
+        .post-fab { position: fixed; bottom: 20px; right: 20px; background: var(--navy); color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 999; }
+    </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+<div class="sidebar" id="sidebar">
+    <div class="close-btn" onclick="toggleMenu()">&times;</div>
+    <a href="#" onclick="toggleMenu()">Home</a>
+    <a href="#" onclick="showPage('About Us: Shahid Baba Web Site provides latest news and updates.')">About Us</a>
+    <a href="#" onclick="showPage('Contact Us: Email - info@shahidbaba.com')">Contact Us</a>
+    <a href="#">Privacy Policy</a>
+</div>
+
+<div class="header-top">
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <div class="logo">SHAHID BABA<span> WEB SITE</span></div>
+    <div class="live-btn" onclick="toggleLive()">● LIVE</div>
+</div>
+
+<div class="nav-scroll">
+    <a href="#" class="active" onclick="filterContent('all', this)">Home</a>
+    <a href="#" onclick="filterContent('video', this)">Videos</a>
+    <a href="#" onclick="filterContent('ipl', this)">IPL 2026</a>
+    <a href="#" onclick="filterContent('india', this)">India</a>
+    <a href="#" onclick="filterContent('world', this)">World</a>
+</div>
+
+<div class="content" id="feed">
+    <div class="news-block" data-category="india">
+        <img src="https://images.unsplash.com/photo-1580130281216-44bd4c034720?w=800" class="main-img">
+        <h1 class="headline">Welcome to Shahid Baba Web Site - Latest Updates</h1>
+    </div>
+</div>
+
+<div class="post-fab" onclick="toggleModal()">+</div>
+
+<div id="liveModal" onclick="toggleLive()">
+    <div class="modal-body" style="background:#000;"><iframe src="https://www.youtube.com/embed/live_stream?channel=UCt4t-jeY85JegMlZ-E5UWtA" allowfullscreen></iframe></div>
+</div>
+
+<div id="modal">
+    <div class="modal-body">
+        <h3>Nayi News Update Karein</h3>
+        <input type="text" id="newsT" placeholder="Headline...">
+        <select id="newsCat">
+            <option value="india">India</option>
+            <option value="ipl">IPL 2026</option>
+            <option value="video">Video Only</option>
+            <option value="world">World</option>
+        </select>
+        <select id="mediaType">
+            <option value="image">Image Link</option>
+            <option value="video">Video/YouTube Link</option>
+        </select>
+        <input type="text" id="newsI" placeholder="URL link yahan dalein...">
+        <button class="submit-btn" onclick="publish()">PUBLISH</button>
+        <button onclick="toggleModal()" style="border:none; background:none; width:100%; margin-top:10px; color:red;">Close</button>
+    </div>
+</div>
+
+<script>
+    function toggleMenu() {
+        const s = document.getElementById('sidebar');
+        const o = document.getElementById('overlay');
+        if(s.style.left === '0px') {
+            s.style.left = '-280px';
+            o.style.display = 'none';
+        } else {
+            s.style.left = '0px';
+            o.style.display = 'block';
+        }
+    }
+
+    function showPage(text) {
+        alert(text);
+        toggleMenu();
+    }
+
+    function toggleModal() {
+        const m = document.getElementById('modal');
+        m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function toggleLive() {
+        const l = document.getElementById('liveModal');
+        l.style.display = (l.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function publish() {
+        const title = document.getElementById('newsT').value;
+        const cat = document.getElementById('newsCat').value;
+        const type = document.getElementById('mediaType').value;
+        const url = document.getElementById('newsI').value;
+
+        if(!title || !url) return alert("Puri details bhariye!");
+
+        let media = (type === 'video') ? 
+            (url.includes('yout') ? `<iframe src="https://www.youtube.com/embed/${url.split('v=')[1] || url.split('/').pop()}" allowfullscreen></iframe>` : `<video src="${url}" controls class="main-video"></video>`) 
+            : `<img src="${url}" class="main-img">`;
+
+        const html = `<div class="news-block" data-category="${cat}">${media}<h1 class="headline">${title}</h1></div>`;
+        document.getElementById('feed').insertAdjacentHTML('afterbegin', html);
+        toggleModal();
+    }
+
+    function filterContent(category, btn) {
+        document.querySelectorAll('.nav-scroll a').forEach(a => a.classList.remove('active'));
+        btn.classList.add('active');
+        
+        document.querySelectorAll('.news-block').forEach(post => {
+            post.style.display = (category === 'all' || post.getAttribute('data-category') === category) ? 'block' : 'none';
+        });
+    }
+</script>
+
+</body>
+</html>
