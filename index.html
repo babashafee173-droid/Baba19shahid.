@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Shahid Baba AI</title>
+    <style>
+        body { margin: 0; font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .card { background: white; width: 340px; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; border-top: 5px solid #ff0000; }
+        .logo { font-size: 24px; font-weight: 900; color: #002e5b; margin-bottom: 20px; }
+        .logo span { color: #ff0000; }
+        input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; box-sizing: border-box; outline: none; transition: 0.3s; }
+        .valid { border-color: #28a745 !important; background: #fafffa; }
+        #status { font-size: 12px; margin: 10px 0; font-weight: bold; color: #666; }
+        .btn { background: #ccc; color: white; border: none; width: 100%; padding: 15px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: not-allowed; }
+        .btn-active { background: #ff0000 !important; cursor: pointer !important; box-shadow: 0 5px 15px rgba(255,0,0,0.3); }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo">SHAHID BABA<span> WEB SITE</span></div>
+        <input type="tel" id="phone" placeholder="Enter Indian Number (+91)" oninput="verify()">
+        <div id="status">AI: Waiting for number...</div>
+        <button id="loginBtn" class="btn" onclick="enter()">VERIFY & ENTER</button>
+    </div>
+    <script>
+        function verify() {
+            const p = document.getElementById('phone');
+            const s = document.getElementById('status');
+            const b = document.getElementById('loginBtn');
+            const reg = /^(?:\+91|91)?[6-9]\d{9}$/;
+            if(reg.test(p.value.replace(/\s/g, ""))) {
+                p.classList.add('valid');
+                s.innerText = "✓ AI VERIFIED: REAL INDIAN NUMBER";
+                s.style.color = "#28a745";
+                b.classList.add('btn-active');
+            } else {
+                p.classList.remove('valid');
+                s.innerText = "× AI: ENTER VALID INDIAN NUMBER";
+                s.style.color = "#ff0000";
+                b.classList.remove('btn-active');
+            }
+        }
+        function enter() {
+            if(document.getElementById('loginBtn').classList.contains('btn-active')) {
+                // Ye line doosri file ko connect karti hai
+                window.location.href = "shahid_news_site.html";
+            }
+        }
+    </script>
+</body>
+</html>
